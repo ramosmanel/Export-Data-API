@@ -5,7 +5,7 @@ import openpyxl
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app, resources={r"/export": {"origins": "http://localhost:8082/triage/legal/export"}})
+CORS(app)
 
 @app.route('/export', methods=['POST'])
 def export_data():
