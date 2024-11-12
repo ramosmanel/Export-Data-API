@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import pandas as pd
-import openpyxl
 from datetime import datetime
+from io import BytesIO
 
 app = Flask(__name__)
 CORS(app)
@@ -45,20 +45,19 @@ def export_data():
 
         df = pd.DataFrame(processed_data)
 
-        output_file = "dados_recebidos.xlsx"
-        df.to_excel(output_file, index=False)
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            df.to_excel(writer, index=False)
+            ws = writer.sheets['Sheet1']
+            for column_cells in ws.columns:
+                max_length = max(len(str(cell.value)) for cell in column_cells if cell.value)
+                adjusted_width = (max_length + 2)
+                ws.column_dimensions[column_cells[0].column_letter].width = adjusted_width
 
-        wb = openpyxl.load_workbook(output_file)
-        ws = wb.active
-        for column_cells in ws.columns:
-            max_length = max(len(str(cell.value)) for cell in column_cells if cell.value)
-            adjusted_width = (max_length + 2)  # Adiciona uma margem para melhor visualização
-            ws.column_dimensions[column_cells[0].column_letter].width = adjusted_width
-
-        wb.save(output_file)
+        output.seek(0)
 
         print("Dados recebidos e planilha gerada com sucesso:", data)
-        return send_file(output_file, as_attachment=True), 200
+        return send_file(output, as_attachment=True, download_name="dados_recebidos.xlsx"), 200
 
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
