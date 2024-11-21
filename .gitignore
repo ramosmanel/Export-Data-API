@@ -1,4 +1,3 @@
-dockerfile
 .venv
 __pycache__
 .idea
