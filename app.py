@@ -56,7 +56,7 @@ def export_data():
 
         output.seek(0)
 
-        print("Dados recebidos e planilha gerada com sucesso:", data)
+        print("Dados recebidos e planilha gerada com sucesso.")
         return send_file(output, as_attachment=True, download_name="dados_recebidos.xlsx"), 200
 
     except ValueError as e:
