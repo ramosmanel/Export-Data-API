@@ -23,7 +23,7 @@ def export_data():
 
                 if isinstance(value, list) and len(value) == 3:
                     try:
-                        value = datetime(value[0], value[1], value[2]).strftime('%d-%m-%Y')
+                        value = datetime(value[0], value[1], value[2]).strftime('%d/%m/%Y')
                     except ValueError:
                         pass
 
@@ -35,7 +35,7 @@ def export_data():
 
                 elif key in ['createdAt', 'updatedAt'] and isinstance(value, (int, float)):
                     try:
-                        value = datetime.utcfromtimestamp(value).strftime('%d-%m-%Y')
+                        value = datetime.utcfromtimestamp(value).strftime('%d/%m/f%Y')
                     except ValueError:
                         pass
 
