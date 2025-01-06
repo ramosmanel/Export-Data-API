@@ -39,6 +39,9 @@ def export_data():
                     except ValueError:
                         pass
 
+                elif key == 'P/ CUMPRIMENTO' and isinstance(value, list):
+                    value = ", ".join(value)
+
                 processed_entry[key] = value
 
             processed_data.append(processed_entry)
