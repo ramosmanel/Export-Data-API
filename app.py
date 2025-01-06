@@ -21,13 +21,13 @@ def export_data():
                 if key == 'id':
                     continue
 
-                if isinstance(value, list) and len(value) == 3:
+                if isinstance(value, list) and len(value) == 3 and all(isinstance(i, int) for i in value):
                     try:
                         value = datetime(value[0], value[1], value[2]).strftime('%d/%m/%Y')
                     except ValueError:
                         pass
 
-                elif isinstance(value, list) and len(value) == 2:
+                elif isinstance(value, list) and len(value) == 2 and all(isinstance(i, int) for i in value):
                     try:
                         value = f"{value[0]:02}:{value[1]:02}"
                     except ValueError:
@@ -35,7 +35,7 @@ def export_data():
 
                 elif key in ['createdAt', 'updatedAt'] and isinstance(value, (int, float)):
                     try:
-                        value = datetime.utcfromtimestamp(value).strftime('%d/%m/f%Y')
+                        value = datetime.utcfromtimestamp(value).strftime('%d/%m/%Y %H:%M:%S')
                     except ValueError:
                         pass
 
@@ -43,7 +43,7 @@ def export_data():
 
             processed_data.append(processed_entry)
 
-        df = pd.DataFrame(processed_data)
+            df = pd.DataFrame(processed_data)
 
         output = BytesIO()
         with pd.ExcelWriter(output, engine='openpyxl') as writer:
