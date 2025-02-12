@@ -20,7 +20,7 @@ def process_value(key, value):
                 # Formata como HH:mm
                 return f"{value[0]:02}:{value[1]:02}"
 
-            elif key == 'TAGS':
+            elif key == 'TAGS' or key == 'ESTADOS':
                 return ", ".join(map(str, value))
 
         elif key in ['createdAt', 'updatedAt'] and isinstance(value, (int, float)):
