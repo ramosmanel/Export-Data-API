@@ -3,20 +3,21 @@ from datetime import datetime
 
 def process_value(key, value):
     try:
-        if key == 'id':
-            return None
-
         if isinstance(value, list):
             if len(value) == 3 and all(isinstance(i, int) for i in value):
-                # Formatar como HH:mm:ss
-                return f"{value[0]:02}:{value[1]:02}:{value[2]:02}"
+                # Verifica se é uma DATA no formato [YYYY, MM, DD]
+                if key.lower().endswith("date") or key.lower().startswith("data"):
+                    return f"{value[2]:02}/{value[1]:02}/{value[0]:04}"  # DD/MM/YYYY
+
+                # Caso contrário, assume que é uma HORA (HH, MM, SS)
+                return f"{value[0]:02}:{value[1]:02}:{value[2]:02}"  # HH:mm:ss
 
             elif len(value) == 4 and all(isinstance(i, int) for i in value):
-                # Ignorar nanossegundos e formatar como HH:mm:ss
+                # Formata como HH:mm:ss (ignorando nanossegundos)
                 return f"{value[0]:02}:{value[1]:02}:{value[2]:02}"
 
             elif len(value) == 2 and all(isinstance(i, int) for i in value):
-                # Formatar como HH:mm
+                # Formata como HH:mm
                 return f"{value[0]:02}:{value[1]:02}"
 
             elif key == 'TAGS':
@@ -26,8 +27,8 @@ def process_value(key, value):
             return datetime.utcfromtimestamp(value).strftime('%d/%m/%Y %H:%M:%S')
 
         return value
-    except ValueError:
-        return value
+    except Exception as e:
+        return str(e)
 
 
 def process_data(data):
