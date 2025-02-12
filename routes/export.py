@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, send_file
 from utils.process import process_data
 from utils.excel import generate_excel
 
-export_bp = Blueprint('export', __name__)
+export_bp = Blueprint('export', __name__, url_prefix='/api')
 
 class ExportError(Exception):
     pass

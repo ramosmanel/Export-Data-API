@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 def process_value(key, value):
     try:
         if key == 'id':
@@ -7,10 +8,18 @@ def process_value(key, value):
 
         if isinstance(value, list):
             if len(value) == 3 and all(isinstance(i, int) for i in value):
-                return datetime(value[0], value[1], value[2]).strftime('%d/%m/%Y')
+                # Formatar como HH:mm:ss
+                return f"{value[0]:02}:{value[1]:02}:{value[2]:02}"
+
+            elif len(value) == 4 and all(isinstance(i, int) for i in value):
+                # Ignorar nanossegundos e formatar como HH:mm:ss
+                return f"{value[0]:02}:{value[1]:02}:{value[2]:02}"
+
             elif len(value) == 2 and all(isinstance(i, int) for i in value):
+                # Formatar como HH:mm
                 return f"{value[0]:02}:{value[1]:02}"
-            elif key == 'P/ CUMPRIMENTO':
+
+            elif key == 'TAGS':
                 return ", ".join(map(str, value))
 
         elif key in ['createdAt', 'updatedAt'] and isinstance(value, (int, float)):
@@ -19,6 +28,7 @@ def process_value(key, value):
         return value
     except ValueError:
         return value
+
 
 def process_data(data):
     if not isinstance(data, list):
