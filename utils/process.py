@@ -6,7 +6,7 @@ def process_value(key, value):
         if isinstance(value, list):
             if len(value) == 3 and all(isinstance(i, int) for i in value):
                 # Verifica se é uma DATA no formato [YYYY, MM, DD]
-                if key.lower().endswith("date") or key.lower().startswith("data"):
+                if key.lower().endswith("date") or key.lower().startswith("data") or key.lower() == "prazo final":
                     return f"{value[2]:02}/{value[1]:02}/{value[0]:04}"  # DD/MM/YYYY
 
                 # Caso contrário, assume que é uma HORA (HH, MM, SS)
