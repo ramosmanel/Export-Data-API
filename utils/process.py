@@ -37,7 +37,9 @@ JSON_TO_DTO_MAPPING = {
     "PROCESSO ASSOCIADO": "internalCode",
     "TAGS": "tags",
     "STATUS": "status",
-    "ESTADOS": "state"
+    "ESTADOS": "state",
+    "PARA SETOR": "forSector",
+    "ATRIBUIDO": "responsible"
 }
 
 
@@ -47,8 +49,8 @@ DTO_ORDER = [
     "cpfCnpj", "defendant", "subject", "originCourt", "district", "forum", "court",
     "internalCode", "communicationType", "communicationDate", "communicationTime",
     "communicationEndDate", "class_", "caseValue", "hearingDate", "hearingTime",
-    "justiceSecret", "note", "forSector", "obfDescription", "penalty", "penaltyAmount",
-    "penaltyType", "deadline", "responsible", "status", "competence"
+    "justiceSecret", "note", "obfDescription", "penalty", "penaltyAmount",
+    "penaltyType", "deadline", "status", "competence", "forSector", "responsible"
 ]
 
 COLUMN_MAPPING = {
@@ -80,13 +82,13 @@ COLUMN_MAPPING = {
     "hearingTime": "Hora da Audiência",
     "justiceSecret": "Segredo de Justiça",
     "note": "Nota",
-    "forSector": "Setor Responsável",
+    "forSector": "Para Setor",
     "obfDescription": "Descrição OBF",
     "penalty": "Multa",
     "penaltyAmount": "Valor da Multa",
     "penaltyType": "Tipo de Multa",
     "deadline": "Prazo Final",
-    "responsible": "Responsável",
+    "responsible": "Atribuido",
     "status": "Status",
     "competence": "Competência"
 }
@@ -123,7 +125,7 @@ def process_value(key, value):
                 # Formata como HH:mm
                 return f"{value[0]:02}:{value[1]:02}"
 
-            elif key.lower() == 'tags' or key.lower() == 'state':
+            elif key.lower() == 'tags' or key.lower() == 'state' or key.lower() == 'forsector':
                 return ", ".join(map(str, value))
 
         elif key in ['createdAt', 'updatedAt'] and isinstance(value, (int, float)):
